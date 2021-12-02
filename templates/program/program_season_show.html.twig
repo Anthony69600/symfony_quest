@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Saison{{ season.number }} de {{program.title}} {% endblock %}
+
+{% block body %}
+
+    <div class="media-body">
+            <h1 class="mt-0">Saison{{ season.number }} de {{program.title}}</h1>
+            <p>liste des episodes:</p>
+            <p> {% for episode in episodes %}
+                Episode {{episode.number}} : {{episode.title}} </br>
+                {% endfor %}
+            </p>
+    </div>
+{% endblock %}
