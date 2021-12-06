@@ -98,9 +98,9 @@ class ProgramController extends AbstractController
      */
     public function showSeason(Program $program, Season $season): Response
     {
-     
+        
         $episodes = $season->getEpisodes();
-
+                
         return $this->render('program/program_season_show.html.twig', [
             'season' => $season,
             'episodes' => $episodes,
