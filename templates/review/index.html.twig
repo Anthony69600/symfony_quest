@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Toutes les critques{% endblock %}
+
+{% block body %}
+    <h2>Toutes les critiques :</h2>
+    <div>
+        {% for review in reviews %}
+        <table>            
+            <thead>
+                <tr>
+                    <th>critiques</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{review.ReviewText}}</td>
+                    <td>{{review.author}}</td>
+                    <td>{{review.date}}</td>
+                    <td>{{review.note}}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    </dic>
+{% endblock %}

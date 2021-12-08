@@ -10,6 +10,14 @@
             <p>{{ program.summary }}</p>
             <p>Catégorie : {{ program.category.name }}</p>
         </div>
+        <div>
+            <p>Critiques :</p>
+            <p>{% for review in reviews %}
+                {{review.note}}/10</br>Contenu :{{review.ReviewText}}</br>autheur:{{review.author}}
+                {% endfor %}
+            </p>
+        </div>
+        </br>
         <div>{% for season in seasons %}
             <p> Saison {{season.number}}
             <a href="{{ path("program_season_show", { program: program.id, season: season.id }) }}">Voir la fiche de la saison</a>

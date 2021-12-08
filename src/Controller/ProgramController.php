@@ -2,15 +2,15 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Program;
-use App\Entity\Category;
 use App\Entity\Season;
 use App\Entity\Episode;
+use App\Entity\Program;
+use App\Entity\Category;
 use App\Form\ProgramType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
@@ -53,7 +53,7 @@ class ProgramController extends AbstractController
         // Get data from HTTP request
         $form->handleRequest($request);
         // Was the form submitted ?
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Deal with the submitted data
             // Get the Entity Manager
             $entityManager = $this->getDoctrine()->getManager();
@@ -84,12 +84,14 @@ class ProgramController extends AbstractController
                 'No program with id : '.$program.' found in program\'s table.'
             );
         }
-
+        
+        $reviews = $program->getReviews();
         $seasons = $program->getSeasons();
 
         return $this->render('program/show.html.twig', [
            'program' => $program,
            'seasons' => $seasons,
+           'reviews' => $reviews,
         ]);
     }
 
@@ -98,7 +100,6 @@ class ProgramController extends AbstractController
      */
     public function showSeason(Program $program, Season $season): Response
     {
-        
         $episodes = $season->getEpisodes();
                 
         return $this->render('program/program_season_show.html.twig', [
