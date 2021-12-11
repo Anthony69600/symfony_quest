@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
  * @UniqueEntity("title")
- * @Assert\EnableAutoMapping()
+ 
  */
 class Program
 {
@@ -25,7 +25,6 @@ class Program
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Unique
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
      */
