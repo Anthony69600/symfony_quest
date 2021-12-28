@@ -12,15 +12,15 @@
         </div>
         <div>
             <p>Critiques :</p>
-            <p>{% for review in reviews %}
-                {{review.note}}/10</br>Contenu :{{review.ReviewText}}</br>autheur:{{review.author}}
+            <p> {% for review in reviews %}
+                    {{review.note}}/10</br>Contenu :{{review.ReviewText}}</br>autheur:{{review.author}}
                 {% endfor %}
             </p>
         </div>
         </br>
         <div>{% for season in seasons %}
             <p> Saison {{season.number}}
-            <a href="{{ path("program_season_show", { program: program.id, season: season.id }) }}">Voir la fiche de la saison</a>
+            <a href="{{ path("program_season_show", { program: program.slug, season: season.slug }) }}">Voir la fiche de la saison</a>
             </p>
 
             {% endfor %}
@@ -28,7 +28,7 @@
         <strong>Acteurs :</strong>
             <ul>
                 {% for actor in program.actors %}
-                    <li><a href="{{path('actor_show', {id: actor.id})}}"><li>{{ actor.name }}</a></li>
+                    <li><a href="{{path('actor_show', {slug: actor.slug})}}"><li>{{ actor.name }}</a></li>
                 {% else %}
                     <li>Aucun acteur pour cette série</li>
                 {% endfor %}

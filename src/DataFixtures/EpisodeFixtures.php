@@ -3,12 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Episode;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
-{
+{   
+    private $slugify;
 
     const EPISODES = [
         [0, "Unaired Pilot", 0, "The first Pilot of what will become The Big Bang Theory. Leonard and Sheldon are two awkward scientists who share an apartment. They meet a drunk girl called Katie and invite her to stay at their place, because she has nowhere to stay. The two guys have a female friend, also a scientist, called Gilda."],
@@ -22,6 +24,11 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
         Leslie seduces Leonard, but afterwards tells him that she is only interested in a one-night stand."],
         ];
 
+    public function __construct(Slugify $slugify)
+        {
+            $this->slugify = $slugify;
+        }
+ 
 
     public function load(ObjectManager $manager): void
     {
@@ -31,6 +38,8 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
             $episode->setSeason($this->getReference('season_' . $episodeTab[0]));
             $episode->setNumber($episodeTab[2]);
             $episode->setTitle($episodeTab[1]);
+            $slug = $this->slugify->generate($episodeTab[1]);
+            $episode->setSlug($slug);
             $episode->setSynopsis($episodeTab[3]);
 
             $manager->persist($episode);

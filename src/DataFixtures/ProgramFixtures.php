@@ -3,12 +3,15 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {   
+    private $slugify;
+
     const PROGRAMS = [
         ['The Big Bang Theory', "Leonard Hofstadter et Sheldon Cooper vivent en colocation à Pasadena, ville de l'agglomération de Los Angeles. Ce sont tous deux des physiciens surdoués, « geeks » de surcroît. C'est d'ailleurs autour de cela qu'est axée la majeure partie comique de la série. Ils partagent quasiment tout leur temps libre avec leurs deux amis Howard Wolowitz et Rajesh Koothrappali pour jouer à des jeux vidéo comme Halo, organiser un marathon de la saga Star Wars, jouer à des jeux de société comme le Boggle klingon ou de rôles tel que Donjons et Dragons, voire discuter de théories scientifiques très complexes.Leur univers routinier est perturbé lorsqu'une jeune femme, Penny, s'installe dans l'appartement d'en face. Leonard a immédiatement des vues sur elle et va tout faire pour la séduire ainsi que l'intégrer au groupe et à son univers, auquel elle ne connaît rien.", 'https://upload.wikimedia.org/wikipedia/fr/6/69/BigBangTheory_Logo.png', '3', ['0', '2']],
         ['Walking Dead', "Le policier Rick Grimes se réveille après un long coma. Il découvre avec effarement que le monde, ravagé par une épidémie, est envahi par les morts-vivants.", 'https://m.media-amazon.com/images/M/MV5BZmFlMTA0MmUtNWVmOC00ZmE1LWFmMDYtZTJhYjJhNGVjYTU5XkEyXkFqcGdeQXVyMTAzMDM4MjM0._V1_.jpg', '5', ['1', '2', '3']],
@@ -17,13 +20,25 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['Stargate SG1','Exploration des différents mondes via la porte des étoiles','https://fr.web.img5.acsta.net/pictures/19/06/14/15/57/3353242.jpg','4',['0', '3']]
         ];
 
-    public function load(ObjectManager $manager): void
+    
+
+    public function __construct(Slugify $slugify)
     {
+        $this->slugify = $slugify;
+    }
+
+
+
+    public function load(ObjectManager $manager): void
+    {   
 
         foreach (self::PROGRAMS as $key => $programTab) {
             $program = new Program();
 
             $program->setTitle($programTab[0]);
+            $slug = $this->slugify->generate($programTab[0]);
+            $program->setSlug($slug);
+            
             $program->setSummary($programTab[1]);
             $program->setPoster($programTab[2]);
             $program->setCategory($this->getReference('category_' . $programTab[3]));
